@@ -11,18 +11,47 @@ Created on Aug 30, 2012
 
 import math
 import pygame
-from random import randrange
+import random
+
+# from random import randrange
 
 # Define the colors we will use in RGB format
 black = [  0,  0,  0]
 white = [255,255,255]
 blue =  [  0,  0,255]
 red =   [255,  0,  0]
+green = [152, 251, 152]
 
 pi=3.141592653
 
 width=700
 height=400
+
+length = 200
+
+
+class Block:
+    # half of the length 
+    def __init__(self, x, y, xlength, ylength): 	
+        self.position = [x,y]
+        self.xlength = xlength
+        self.ylength = ylength
+        
+
+    def top(self):
+        return self.position[1]-self.ylength/2
+
+    def bottom(self):
+        return self.position[1]+self.ylength/2
+        
+    def left(self):
+        return self.position[0]-self.xlegnth/2
+    
+    def right(self):
+        return self.position[0]+self.xlegnth/2
+
+    def draw(self,screen):
+        pygame.draw.rect(screen, green, (self.position[0], self.position[1], self.xlength, self.ylength), 1)
 
 class Ball:
     def __init__(self,x,y,degrees):
@@ -180,6 +209,10 @@ class PyPong:
         clock=pygame.time.Clock()
         
         ball=Ball(width/2,height/2,0)
+        # ------Adding Block to the game ----
+        randx = random.randint(100,width - 100)
+        randy = random.randint(50, height)
+        rectT = Block(randx, randy, 50, 50)
         # Paddle(top,column,length,color)
         player1=Paddle(height/3,40,height/6,red)
         player2=Paddle(height/3,width-50,height/6,blue)
@@ -205,13 +238,14 @@ class PyPong:
             player1.draw(screen)
             player2.draw(screen)
             ball.draw(screen)
-        
+            # ------Drawing Block to the game ----
+            rectT.draw(screen)
             font = pygame.font.Font(None, 25)
         
             # Render the text. "True" means anti-aliased text. 
             # Black is the color. This creates an image of the 
             # letters, but does not put it on the screen
-            text = font.render("PyPong",True,black)
+            text = font.render("PyPong by Wally",True,black)
             score1text=font.render(player1.score(),True,red)
             score2text=font.render(player2.score(), True, blue)
         
